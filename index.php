@@ -109,8 +109,8 @@
                                         <td><?php echo $pessoa["email"]; ?></td>
                                         <td><?php echo $pessoa["categoria_nome"]; ?></td>
                                         <td>
-                                            <a href="../teste-athenas?cod_pessoa=<?php echo $pessoa["codigo"]; ?>">Editar</a>
-                                            <a href="../teste-athenas?excluir_pessoa=<?php echo $pessoa["codigo"]; ?>">Excluir</a>
+                                            <a href="../teste-athenas?cod_pessoa=<?php echo $pessoa["codigo"]; ?>"><i class="bi bi-pencil-square"></i></a>
+                                            <a href="../teste-athenas?excluir_pessoa=<?php echo $pessoa["codigo"]; ?>"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php
