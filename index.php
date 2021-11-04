@@ -11,49 +11,66 @@
     </head>
     <body>
         <div class="container">
+            <?php include 'api/functions.php' ?>
             <form action="../teste-athenas/" class="row g-3" method="post">
-                <div class="col-md-6">
-                    <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4">
+                <div class="col-6">
+                    <label for="nomeUsuario" class="form-label">Nome</label>
+                    <input type="text" class="form-control" name="nome" value="<?php echo (isset($_GET["cod_pessoa"])) ? ListarPessoa($_GET["cod_pessoa"])[0]["nome"] : "" ?>" required>
                 </div>
-                <div class="col-md-6">
-                    <label for="inputPassword4" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4">
+                <div class="col-4">
+                    <label for="emailUsuario" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" value="<?php echo (isset($_GET["cod_pessoa"])) ? ListarPessoa($_GET["cod_pessoa"])[0]["email"] : "" ?>" required>
                 </div>
-                <div class="col-12">
-                    <label for="inputAddress" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="col-12">
-                    <label for="inputAddress2" class="form-label">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                    <label for="inputCity" class="form-label">City</label>
-                    <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="col-md-4">
-                    <label for="inputState" class="form-label">State</label>
-                    <select id="inputState" class="form-select">
-                        <option selected>Choose...</option>
-                        <option>...</option>
+                <div class="col-2">
+                    <label for="inputState" class="form-label">Categoria</label>
+                    <select class="form-select" name="categoria" required>
+                        <option value="" selected> - Selecione - </option>
+                        <?php
+                            $categorias = ListarCategorias();
+                            foreach ($categorias as $key => $categoria) {
+                                $selecionado = false;
+                                if (isset($_GET["cod_pessoa"])) {
+                                    $usuario = ListarPessoa($_GET["cod_pessoa"])[0];
+                                    $cat = ListarCategoria($usuario["categoria_id"])[0];
+                                    $selecionado = ($categorias[$key]["nome"] == $cat["nome"]);
+                                }
+                                ?><option value="<?php echo $categoria["codigo"] ?>" <?php echo ($selecionado) ? "selected" : "" ?> ><?php echo $categoria["nome"] ?></option><?php
+                            }
+                        ?>
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <label for="inputZip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" id="inputZip">
-                </div>
                 <div class="col-12">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck">
-                        <label class="form-check-label" for="gridCheck">
-                            Check me out
-                        </label>
-                    </div>
+                    <?php
+                        if (isset($_GET["cod_pessoa"])) {
+                            ?> 
+                            <input type="hidden" name="pessoa_cod" value="<?php echo $_GET["cod_pessoa"] ?>">
+                            <button type="submit" class="btn btn-primary" name="atualizar_pessoa">Atualizar</button> 
+                            <?php
+                        } else {
+                            ?> <button type="submit" class="btn btn-primary" name="cadastrar_pessoa">Cadastrar</button> <?php
+                        }
+                    ?>
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Sign in</button>
-                </div>
+                
+                <?php 
+                    if (isset($_POST["cadastrar_pessoa"])) {
+                        $cadastro = CadastrarPessoa($_POST["nome"], $_POST["email"], $_POST["categoria"]);
+                        
+                        if (isset($cadastro["mensagem"])) {
+                            ?> <div class="alert alert-success col-12"><?php echo $cadastro["mensagem"] ?></div> <?php
+                        } else {
+                            ?> <div class="alert alert-danger col-12"><?php echo $cadastro["erro"] ?></div> <?php
+                        }
+                    } else if (isset($_POST["atualizar_pessoa"])) {
+                        $atualizacao = EditarPessoa($_POST["pessoa_cod"], $_POST["nome"], $_POST["email"], $_POST["categoria"]);
+                        
+                        if (isset($atualizacao["mensagem"])) {
+                            ?> <div class="alert alert-success col-12"><?php echo $atualizacao["mensagem"] ?></div> <?php
+                        } else {
+                            ?> <div class="alert alert-danger col-12"><?php echo $atualizacao["erro"] ?></div> <?php
+                        }
+                    }
+                ?>
             </form>
         </div>
 
@@ -66,10 +83,25 @@
                             <td>Nome</td>
                             <td>E-mail</td>
                             <td>Categoria</td>
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php
+                            $pessoas = ListarPessoas();
+                            
+                            foreach ($pessoas as $key => $pessoa) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $pessoa["codigo"]; ?></td>
+                                        <td><?php echo $pessoa["nome"]; ?></td>
+                                        <td><?php echo $pessoa["email"]; ?></td>
+                                        <td><?php echo $pessoa["categoria_nome"]; ?></td>
+                                        <td><a href="../teste-athenas?cod_pessoa=<?php echo $pessoa["codigo"]; ?>">Editar</a></td>
+                                    </tr>
+                                <?php
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>
