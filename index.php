@@ -26,9 +26,15 @@
                     <select class="form-select" name="categoria" required>
                         <option value="" selected> - Selecione - </option>
                         <?php
+                        
+                            // Listando as categorias dentro do SELECT
+                        
                             $categorias = ListarCategorias();
                             foreach ($categorias as $key => $categoria) {
                                 $selecionado = false;
+                                
+                                // Atualização da categoria da pessoa
+                                
                                 if (isset($_GET["cod_pessoa"])) {
                                     $usuario = ListarPessoa($_GET["cod_pessoa"])[0];
                                     $cat = ListarCategoria($usuario["categoria_id"])[0];
@@ -41,6 +47,8 @@
                 </div>
                 <div class="col-12">
                     <?php
+                        // Atualização/Cadastro
+                    
                         if (isset($_GET["cod_pessoa"])) {
                             ?> 
                             <input type="hidden" name="pessoa_cod" value="<?php echo $_GET["cod_pessoa"] ?>">
@@ -53,6 +61,8 @@
                 </div>
                 
                 <?php 
+                    // Mensagem de retorno das funcionalidades do CRUD
+                
                     if (isset($_POST["cadastrar_pessoa"])) {
                         $cadastro = CadastrarPessoa($_POST["nome"], $_POST["email"], $_POST["categoria"]);
                         
@@ -96,6 +106,8 @@
                     </thead>
                     <tbody>
                         <?php
+                            // paginação dos resultados
+                        
                             $pessoas = ListarPessoas();
                             
                             $pagina = (isset($_GET["pagina"])) ? $_GET["pagina"] - 1 : 0;
@@ -121,6 +133,8 @@
                 
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <?php
+                        // listagem dos botões da paginação
+                    
                         $nr_buttons = ceil(count($pessoas) / ((isset($_GET["qtd"])) ? $_GET["qtd"] : 10));
                         
                         for ($i = 1; $i <= $nr_buttons; $i++) {

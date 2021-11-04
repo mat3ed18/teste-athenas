@@ -1,8 +1,14 @@
 <?php
+    // Importando a classe de conexão (parte do projeto utiliza uma classe PHP OO)
+
     include "classes/Conexao.php";
+    
+    // Criação do objeto de conexão com o host, usuário, senha e banco de dados (Modificar aqui para servidor local XAMPP, FTP, ...)
     
     $con = new Conexao("localhost", "root", "usbw", "athenas-db");
     $con->getConexao()->query("SET NAMES 'utf8'");
+    
+    // Funções do CRUD
     
     function CadastrarPessoa($nome, $email, $categoria) {
         $res = $GLOBALS["con"]->getConexao()->query('INSERT INTO pessoas (nome, email, categoria_id) VALUES ("' . $nome . '", "' . $email . '", '.$categoria.')');
