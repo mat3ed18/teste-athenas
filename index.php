@@ -90,7 +90,10 @@
                         <?php
                             $pessoas = ListarPessoas();
                             
-                            foreach ($pessoas as $key => $pessoa) {
+                            $pagina = (isset($_GET["pagina"])) ? $_GET["pagina"] - 1 : 0;
+                            $pessoas_pag = array_chunk($pessoas, (isset($_GET["qtd"])) ? $_GET["qtd"] : 10);
+                            
+                            foreach ($pessoas_pag[$pagina] as $key => $pessoa) {
                                 ?>
                                     <tr>
                                         <td><?php echo $pessoa["codigo"]; ?></td>
@@ -104,6 +107,17 @@
                         ?>
                     </tbody>
                 </table>
+                
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <?php
+                        $nr_buttons = ceil(count($pessoas) / ((isset($_GET["qtd"])) ? $_GET["qtd"] : 10));
+                        
+                        for ($i = 1; $i <= $nr_buttons; $i++) {
+                            ?> <a class="btn btn-secondary" href="../teste-athenas?pagina=<?php echo $i ?>"><?php echo $i ?></a> <?php
+                        }
+                    ?>
+                </div>
+                
             </div>
         </div>
     </body>
