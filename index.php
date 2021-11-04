@@ -69,6 +69,14 @@
                         } else {
                             ?> <div class="alert alert-danger col-12"><?php echo $atualizacao["erro"] ?></div> <?php
                         }
+                    } else if (isset($_GET["excluir_pessoa"])) {
+                        $exclusao = ExcluirPessoa($_GET["excluir_pessoa"]);
+                        
+                        if (isset($exclusao["mensagem"])) {
+                            ?> <div class="alert alert-success col-12"><?php echo $exclusao["mensagem"] ?></div> <?php
+                        } else {
+                            ?> <div class="alert alert-danger col-12"><?php echo $exclusao["erro"] ?></div> <?php
+                        }
                     }
                 ?>
             </form>
@@ -100,7 +108,10 @@
                                         <td><?php echo $pessoa["nome"]; ?></td>
                                         <td><?php echo $pessoa["email"]; ?></td>
                                         <td><?php echo $pessoa["categoria_nome"]; ?></td>
-                                        <td><a href="../teste-athenas?cod_pessoa=<?php echo $pessoa["codigo"]; ?>">Editar</a></td>
+                                        <td>
+                                            <a href="../teste-athenas?cod_pessoa=<?php echo $pessoa["codigo"]; ?>">Editar</a>
+                                            <a href="../teste-athenas?excluir_pessoa=<?php echo $pessoa["codigo"]; ?>">Excluir</a>
+                                        </td>
                                     </tr>
                                 <?php
                             }

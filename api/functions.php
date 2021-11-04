@@ -25,7 +25,7 @@
     function ExcluirPessoa($codigo) {
         $res = $GLOBALS["con"]->getConexao()->query('DELETE FROM pessoas WHERE codigo = ' . $codigo);        
         if ($res) {
-            return array("mensagem" => "A pessoa foi atualizada com sucesso!");
+            return array("mensagem" => "A pessoa foi excluída com sucesso!");
         } else {
             return array("erro" => "Erro: " . mysqli_error($GLOBALS["con"]->getConexao()));
         }
