@@ -1,0 +1,17 @@
+@import url("../../bootstrap/css/bootstrap.min.css");
+
+#gist95989549 {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 10%;
+}
+
+.nav {
+    position: fixed;
+    width: 100%;
+    padding: 0.5%;
+}
+
+.nav li a {
+    color: white;
+}
